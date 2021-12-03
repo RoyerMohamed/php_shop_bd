@@ -1,4 +1,44 @@
 <?php
+
+    $dbh = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
+    echo $dbh; 
+    // foreach($dbh->query('SELECT * from FOO') as $row) {
+    //     print_r($row);
+    // }
+    $dbh = null;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //add desp_court 
 function get_products()
 {
@@ -56,7 +96,7 @@ function get_products()
 
 function show_single_product($id)
 {
-    $products = get_product_by_id($id);
+    $products = get_products();
 
     foreach ($products as $product) {
         $saveur = $product['Saveur'];
