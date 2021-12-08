@@ -230,3 +230,7 @@ small{
 .fa-cart-plus{
     font-size: 3rem;
 }
+
+.profil{
+    color: red !important; 
+}

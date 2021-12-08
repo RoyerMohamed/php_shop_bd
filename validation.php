@@ -1,8 +1,6 @@
 <?php require('./header.php');
 include('./function.php');
 session_start();
-// total des frais , prix 
-
 ?>
 <section class="container page_header">
     <div class="row">

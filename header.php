@@ -34,6 +34,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="./panier.php">Panier</a>
                     </li>
+                      
+                    <li class="nav-item">
+                        <a class="nav-link" href="./inscription.php">cree un compte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./connection.php">Me connecter </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./profil.php">Mon profil </a>
+                    </li>
                     
                 </ul>
 
