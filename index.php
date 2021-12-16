@@ -6,6 +6,14 @@ if(isset($_POST['validation_de_commande'])){
     delete_all_products();
   }
 
+ if (
+    isset($_POST["mot_de_passe_conection"])
+    && isset($_POST["email_conection"])
+) {
+    user_connection();
+}
+
+
 ?>
 <main class="container-fluid">
     <section class="container hero">

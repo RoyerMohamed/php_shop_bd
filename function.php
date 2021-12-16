@@ -3,6 +3,11 @@
 //optimise pas de boucle pour les show
 
 ini_set('display_errors', 1);
+
+/* diplay functions*/
+
+
+/**/
 function show_single_product($id)
 {
     $products = mes_produit();
@@ -43,7 +48,9 @@ function show_single_product($id)
         }
     }
 }
-function show_multiple_products(){
+
+function show_multiple_products()
+{
     $products = mes_produit();
     foreach ($products as $product) {
 
@@ -68,7 +75,8 @@ function show_multiple_products(){
           ";
     }
 }
-function add_to_cart($id){
+function add_to_cart($id)
+{
     $product = get_product_by_id($id);
     $product['quantity'] = 1;
     foreach ($_SESSION['panier'] as  $value) {
@@ -81,7 +89,8 @@ function add_to_cart($id){
     array_push($_SESSION['panier'], $product);
 }
 
-function update_quantity($id, $quantity){
+function update_quantity($id, $quantity)
+{
     for ($i = 0; $i < count($_SESSION['panier']); $i++) {
         if ($_SESSION['panier'][$i]['id'] === $id) {
             $_SESSION['panier'][$i]['quantity'] = $quantity;
@@ -89,7 +98,8 @@ function update_quantity($id, $quantity){
     }
 }
 
-function delete_product_by_id($id){
+function delete_product_by_id($id)
+{
 
     foreach ($_SESSION['panier'] as $key => $value) {
         if ($value['id'] == $id) {
@@ -97,7 +107,8 @@ function delete_product_by_id($id){
         }
     }
 }
-function delete_all_products(){
+function delete_all_products()
+{
     $db = getConnection();
     foreach ($_SESSION['panier'] as $value) {
         $result = $db->prepare('INSERT INTO commandes (numero,date_commande,prix ) VALUES (:numero,:date_commande,:prix ) ');
@@ -110,7 +121,8 @@ function delete_all_products(){
     $_SESSION['panier'] = array();
 }
 
-function show_validation(){
+function show_validation()
+{
     foreach ($_SESSION['panier'] as $product) {
         $quantity = $product['quantity'];
         $img = $product['picture'];
@@ -134,13 +146,15 @@ function show_validation(){
     }
 }
 
-function shipping_date(){
+function shipping_date()
+{
     setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
     $today = date('D M Y');
     $NewDate = date('D M Y', strtotime('+3 days'));
     echo "Confirmation de votre commande le $today . <br> Estimation de livraision $NewDate .";
 }
-function show_cart(){
+function show_cart()
+{
 
     foreach ($_SESSION['panier'] as $product) {
         $quantity = $product['quantity'];
@@ -176,7 +190,8 @@ function show_cart(){
       ";
     }
 }
-function frais(){
+function frais()
+{
     $frais = 3;
     $result = 0;
     foreach ($_SESSION['panier'] as $product) {
@@ -186,7 +201,8 @@ function frais(){
     return $result;
 }
 
-function show_cart_total(){
+function show_cart_total()
+{
     $_SESSION['panier'];
     $price = 0;
     foreach ($_SESSION['panier'] as $product) {
@@ -196,7 +212,8 @@ function show_cart_total(){
     echo "<p class=\"total\">$price</p>";
 }
 
-function get_product_by_id($id){
+function get_product_by_id($id)
+{
     $db = getConnection();
     $result = $db->prepare('SELECT * FROM articles WHERE id = :id');
     $result->execute(array(
@@ -205,7 +222,8 @@ function get_product_by_id($id){
     return $result->fetch();
 }
 
-function getConnection(){
+function getConnection()
+{
     try {
         $db = new PDO(
             'mysql:host=localhost;dbname=shop;charset=utf8',
@@ -219,16 +237,19 @@ function getConnection(){
     return $db;
 }
 
-function mes_produit(){
+function mes_produit()
+{
     $db = getConnection();
     $query = $db->query('SELECT * FROM articles');
     $products = $query->fetchAll();
     return $products;
 }
-function show_inscription(){
-    $id = rand(0, 9999999);
+function show_inscription()
+
+{
+    //ajoue de
     echo "
-    <form action=\"profil.php\" method=\"POST\">
+    <form action=\"connection.php\" method=\"POST\">
   <div class=\"mb-3\"> 
     <label for=\"nom_inscription\" class=\"form-label\">Nom</label>
     <input type=\"text\" class=\"form-control\" name=\"nom_inscription\" id=\"nom_inscription\" aria-describedby=\"emailHelp\">
@@ -244,36 +265,68 @@ function show_inscription(){
     <div class=\"mb-3\">
     <label for=\"mot_de_passe_inscription\" class=\"form-label\">Mot de passe </label>
     <input type=\"password\" class=\"form-control\" name=\"mot_de_passe_inscription\" id=\"mot_de_passe_inscription\">
-    <input type=\"hidden\"  name=\"clients_id\" id=\"clients_id\" value=\"$id\">
     </div>
     <input type=\"submit\" class=\"btn btn-primary\"value=\"Submit\">
     </form>
  ";
 }
 
-function add_user($user){
-    $db = getConnection();
-    $result = $db->prepare('INSERT INTO clients (id,nom,prenom,mot_de_passe,email) VALUES (:id,:non,:prenom,:mot_de_passe,:email ) ');
-    $result->execute(array(
-        "id" => $user["id"],
-        "non" => $user["nom"],
-        "prenom" => $user["prenom"],
-        "email" => $user["email"],
-        "mot_de_passe" => $user["mot_de_passe"]
-    ));
-}
-
-function user_verification($id)
+function add_user($user)
 {
     $db = getConnection();
-    $clients = $db->prepare('SELECT id FROM clients WHERE id=:id');
-    $clients->execute(array(
-        "id" => $id
-    ));
-    if ($clients->fetchAll()[0]["id"] === $id) {
-        return true;
+
+    foreach ($user as $key => $value) {
+        if (strlen($value) < 3 && strlen($value)) {
+            var_dump(strlen($value) < 3 && strlen($value) > 30 );
+            echo '<script>alert(\'la longeur de votre' . $key . ' n\'est pas bonne ! \')</script>';
+        }
     }
-    var_dump($clients->fetchAll()[0]["id"]);
+
+        if ($user['mot_de_passe'] != null) {
+            $uppercase = preg_match('@[A-Z]@', $user["mot_de_passe"]);
+            $lowercase = preg_match('@[a-z]@', $user["mot_de_passe"]);
+            if (!$lowercase || !$uppercase ) {
+                echo '<script>alert(\'Votre mot de passe ne remplis pas toute les conditions \')</script>';
+                return;
+            }
+        }  
+
+    $query = $db->prepare(
+        'INSERT INTO clients (nom,prenom,mot_de_passe,email) 
+        VALUES (:nom,:prenom,:mot_de_passe,:email ) '
+    );
+
+    $query->execute(array(
+        "nom" => $user["nom"],
+        "prenom" => $user["prenom"],
+        "mot_de_passe" => $user["mot_de_passe"],
+        "email" => $user["email"]
+    ));
+
+   echo "<script>alert(\"Vous ètes bien inscrit \")</script>";
+}
+
+function user_connection()
+{
+
+    $db = getConnection();
+    $clients = $db->prepare('SELECT * FROM clients WHERE email=:email');
+    $clients->execute(array(
+        "email" =>  $_POST['email_conection']
+    ));
+    $result = $clients->fetch();
+    if ($result) {
+        //var_dump($result);
+        if ($result["mot_de_passe"] === $_POST["mot_de_passe_conection"]) {
+            $_SESSION["user_info"]  = array_splice($result, array_search("mot_de_passe", array_keys($result)), 1);
+           var_dump($_SESSION["user_info"]);
+            echo '<script>alert(\'Vous êtes connecté !\')</script>';
+        } else {
+            echo '<script>alert(\'Mot de passe n\'est pas bon  !\')</script>';
+        }
+    } else {
+        echo '<script>alert(\'Email n\'est pas bon !\')</script>';
+    };
     return false;
 }
 
@@ -282,22 +335,22 @@ function Show_connection()
     echo "
     <h1>connecté vous </h1>
     <div class=\"container \">
-        <form action=\"index.php\" methode=\"POST\">
+        <form action=\"index.php\" method=\"POST\">
             <div class=\"mb-3\">
-                <label for=\"exampleInputEmail1\" class=\"form-label\">Email address</label>
-                <input type=\"email\" class=\"form-control\" id=\"exampleInputEmail1\" aria-describedby=\"emailHelp\">
-                <div id=\"emailHelp\" class=\"form-text\">We'll never share your email with anyone else.</div>
+                <label for=\"email_conection\" class=\"form-label\">Email address</label>
+                <input type=\"email\" class=\"form-control\" name=\"email_conection\" id=\"email_conection\" aria-describedby=\"emailHelp\">
             </div>
             <div class=\"mb-3\">
-                <label for=\"exampleInputPassword1\" class=\"form-label\">Password</label>
-                <input type=\"password\" class=\"form-control\" id=\"exampleInputPassword1\">
+                <label for=\"mot_de_passe_conection\" class=\"form-label\">Password</label>
+                <input type=\"password\" name=\"mot_de_passe_conection\" class=\"form-control\" id=\"mot_de_passe_conection\">
             </div>
             <button type=\"submit\" class=\"btn btn-primary\">Submit</button>
         </form>
     </div>";
 }
 
-function show_profil(){
+function show_profil()
+{
     echo "
     <h1>mon profil </h1>
     <div class=\"container \">
@@ -315,11 +368,11 @@ function show_profil(){
             <button type=\"submit\" class=\"btn btn-primary\">Submit</button>
         </form>
     </div>";
-
 }
 
-function show_multiple_orders(){
-    $orders = get_all_orders(); 
+function show_multiple_orders()
+{
+    $orders = get_all_orders();
     foreach ($orders as $order) {
         # code...
         echo " <div class=\"commandes\">
@@ -328,15 +381,17 @@ function show_multiple_orders(){
     }
     // 
 }
-function get_all_orders(){
+function get_all_orders()
+{
     $db = getConnection();
     $query = $db->query('SELECT * FROM commandes');
     $products = $query->fetchAll();
-    return $products; 
+    return $products;
 }
 
-function show_single_orders($id){
-    $order = get_order_by_id($id); 
+function show_single_orders($id)
+{
+    $order = get_order_by_id($id);
     foreach ($order as $value) {
         # code...
         echo " <div class=\"commandes\">
@@ -345,12 +400,30 @@ function show_single_orders($id){
     }
     // 
 }
-function get_order_by_id($id){
+function get_order_by_id($id)
+{
 
     $db = getConnection();
     $result = $db->prepare('SELECT * FROM commandes WHERE id=:id');
-    $result->execute(array( "id" => $id ));
-    $result->fetch(); 
+    $result->execute(array("id" => $id));
+    $result->fetch();
 
-    return $result; 
+    return $result;
+}
+
+
+
+
+
+
+
+
+function check_passe($user)
+{
+    foreach ($user as $key => $value) {
+        if (strlen($value) < 3 || strlen($value) > 30) {
+            //regex
+            echo '<script>alert(\'la longeur de votre' . $key . ' n\'est pas bonne ! \')</script>';
+        }
+    }
 }
