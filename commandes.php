@@ -1,7 +1,6 @@
 <?php
 include('./function.php');
 require('./header.php');
-session_start();
 ?>
 
 

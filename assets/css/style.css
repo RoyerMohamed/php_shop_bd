@@ -63,6 +63,7 @@ font-size: 2rem;    }
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .categories_box{
@@ -73,8 +74,9 @@ padding: 3rem 1rem;
 color: #fff;
 filter: grayscale(50%);
 font-size: 1.2rem;
-    height: 50vh;
-    width: 40vh;
+    height: 50%;
+    width: 25%;
+    max-width: 500px;
     border-radius: 25px;
     background-position: center;
     background-size: cover;
@@ -84,6 +86,8 @@ font-size: 1.2rem;
 .yello{
     color: #ffee38  ;
     font-weight: bolder;
+    display: flex;
+    font-size: 1rem;
 }
 .add{
     border: none;
@@ -130,44 +134,38 @@ hr {
 }
 
 .panier{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.validation{
+    justify-content: space-between;
     min-height: 80vh;
 }
 
-
 .panier_card:hover{
-    box-shadow: 0px 0px 13px -1px rgba(255, 255, 255, 0.81);}
+    box-shadow: 0px 0px 13px -1px rgba(255, 255, 255, 0.81);
+}
 .panier_card{  
     border-radius: 25px;  
     transition: 300ms ;
-    height: 30vh;
-    width: 50vw !important;   
+    width: 45% !important;   
     background-color: #3d8577 ;
     color: #fff;
     font-size: 1.3rem;
+    object-fit: cover;
+
 }
-.panier_box{
-    display: flex;
-flex-direction: column; 
-justify-content: center;
-align-self:flex-start;
-padding: 3rem 1rem;
-color: #fff;
-filter: grayscale(50%);
-font-size: 1.2rem;
-    height: 25vh;
-    width: 25vh;
+
+.panier_img{
+    filter: grayscale(50%);
     border-radius: 25px;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
     box-shadow: 0px 2px 15px -1px rgba(0,0,0,0.81);
-    margin-top:1em; 
+    width: 100px;
 }
 .panier_descp{
     flex-basis: 50% !important;
 }
-
-
 
 /** section description */
 
@@ -233,4 +231,19 @@ small{
 
 .profil{
     color: red !important; 
+}
+
+
+
+.quantity{
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 20px;
+
+}
+
+.disconect{
+    background-color: transparent;
+    border: none;
 }

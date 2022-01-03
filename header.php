@@ -1,5 +1,10 @@
+<?php session_start();
+$is_connected = false;
+if (isset($_SESSION["user_info"])) {
+    $is_connected = $_SESSION["user_info"][1]['is_connected'];
+}
 
-<?php session_start(); ?>
+?>
 
 <!DOCTYPE html>
 
@@ -20,32 +25,41 @@
 
 <body>
 
-        <header class="d-flex container justify-content-between pt-3 pb-5">
-            <div class="logo">
-                <img src="./assets/img/logo.png" alt="">
-            </div>
+    <header class="d-flex container justify-content-between pt-3 pb-5">
+        <div class="logo">
+            <img src="./assets/img/logo.png" alt="">
+        </div>
 
-            <nav>
-                <ul class="nav ">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Accueil</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="./panier.php">Panier</a>
-                    </li>
-                      
-                    <li class="nav-item">
-                        <a class="nav-link" href="./inscription.php">cree un compte</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./connection.php">Me connecter </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./profil.php">Mon profil </a>
-                    </li>
-                    
-                </ul>
+        <nav>
+            <ul class="nav ">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/">Accueil</a>
+                </li>
 
-            </nav>
-        </header>
+                <li class="nav-item">
+                    <a class="nav-link" href="panier.php">Panier</a>
+                </li>
+
+                <li class="<?php echo  !$is_connected ?  "nav-item" : "d-none" ?>">
+                    <a class="nav-link" href="connection.php"> Connection / Inscription </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profil.php"><?php echo  !$is_connected ? "" : "mon compte" ?></a>
+                </li>
+                <li class="nav-item">
+                    <form action="index.php" method="POST">
+                        <input type="submit" class="nav-link disconect" value="<?php echo  !$is_connected ? "" : "déconnection" ?>">
+                        <input type="hidden" name="log_out_user" value="" id="log_out_user">
+                    </form>
+                </li>
+
+                <li class="mt-2  <?php echo  $is_connected ?  "nav-item" : "d-none" ?>">
+                    <span class=""> </span>
+                </li>
+
+
+
+            </ul>
+
+        </nav>
+    </header>

@@ -1,7 +1,6 @@
 <?php
 include('./function.php');
 require('./header.php');
-session_start(); 
 if(isset($_POST['validation_de_commande'])){
     delete_all_products();
   }
@@ -13,12 +12,42 @@ if(isset($_POST['validation_de_commande'])){
     user_connection();
 }
 
+if (isset($_POST["log_out_user"])) {
+    var_dump($_SESSION["user_info"][1]['is_connected']); 
+    log_out_user(); 
+}
+if(
+isset($_POST['update_nom']) && isset($_POST['update_prenom'])
+){
+  $data = [
+      "id" =>  intval($_SESSION["user_info"][0]), 
+      "update_nom"=>$_POST['update_nom'],
+      "update_prenom"=>$_POST['update_prenom']
+  ];
+  uptate_information($data);
+  var_dump(intval($_SESSION["user_info"][0]));
+
+}
+if(
+  isset($_POST['update_adress'])&&isset($_POST['update_code_postal'])&& isset($_POST['update_ville'])
+   
+  ){
+    $data = [
+        "id" =>  intval($_SESSION["user_info"][0]), 
+        "update_adress"=> $_POST['update_adress'],
+        "update_code_postal"=> $_POST['update_code_postal'],
+        "update_ville"=> $_POST['update_ville'],
+    ];
+    uptate_adress($data);
+    // var_dump();
+  }
+
 
 ?>
 <main class="container-fluid">
     <section class="container hero">
         <div class="row h-100 d-flex align-content-center flex-wrap">
-            <div class=" col-md-6 hero_text w-50">
+            <div class=" col-md-6  hero_text w-50">
                 <h1>Marijuana médicale
                     Boutique de produits</h1>
                 <p>Cras maximus, elit at maximus feugiat, nisi sapien mollis metus,
@@ -38,9 +67,30 @@ if(isset($_POST['validation_de_commande'])){
 
         </div>
     </section>
-    <section class="container categories ">
+    <section class="container-fluid categories ">
 
   <?php show_multiple_products() ?>
+  <div class="modal fade" id="home_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      Le produit a été ajouté ! 
+     </div>
+      <div class="modal-footer">
+        <form action="/index.php" method="post">
+          <input type="submit" class="btn btn-primary" value="Continuer sur la pasge d'accueil ">
+        </form>
+        <form action="/panier.php" method="post">
+          <input type="submit" class="btn btn-primary" value="Voir mon panier ">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
     </section>
 
 </main>

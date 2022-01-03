@@ -1,7 +1,6 @@
 <?php 
 require('./header.php');
 include('./function.php') ; 
-session_start(); 
 $product_id = ""; 
 if(isset($_POST['product_id'])){
     $product_id = $_POST['product_id']; 
