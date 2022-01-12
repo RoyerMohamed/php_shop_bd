@@ -7,7 +7,7 @@ if (isset($_POST['delete_product_by_id'])) {
     delete_product_by_id($_POST['delete_product_by_id']);
 }
 if (isset($_POST['delete_panier'])) {
-    delete_all_products();
+    save_ordre();
 }
 
 
@@ -24,7 +24,7 @@ if (isset($_POST['add_to_cart'])) {
     <div class="row">
         <div class="col text-center fs-3" >
             <h1>Panier</h1>
-            <h2><?php show_cart_total(); ?></h2>
+            <h2>Le total du panier est de <?= calculate_total_price(); ?> € </h2>
         </div>
     </div>
 </section>

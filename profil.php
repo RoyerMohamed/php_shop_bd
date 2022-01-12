@@ -8,78 +8,10 @@ require('./header.php');
     <h1 class="text-center pb-5">mon profil </h1>
     <div class="container " style="color: white;">
         <div class="row">
+            <?= show_uptate_information("index.php" , "") ?>  
+            <?php show_uptate_pass("index.php") ?>
+            <?= show_uptate_adress("index.php" , "") ?>
 
-            <div class="col-md-3 d-flex flex-column text-center ">
-                <i class="fas fa-users pb-4  " style="font-size: 5rem;"></i>
-                <h4>
-                    Modifier mes information
-                </h4>
-                <form action="./index.php" method="POST">
-                    <div class="d-flex flex-column text-center pb-3">
-                        <label for="update_nom">modifier votre nom :</label>
-                        <input type="text" name="update_nom" id="update_nom">
-                        <input type="hidden" >
-                    </div>
-                    <div class="d-flex flex-column text-center pb-3">
-                        <label for="update_prenom">modifier votre prenom :</label>
-                        <input type="text" name="update_prenom" id="update_prenom">
-                        <input type="hidden" >
-                    </div>
-                    <div class="d-flex w-50 mt-3 flex-column text-center pb-3">
-                        <input type="submit" class="btn btn-primary" value="Valider">
-                        <input type="hidden">
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-md-3 d-flex flex-column text-center ">
-                <i class="fas fa-key pb-4  " style="font-size: 5rem;"></i>
-                <h4>
-                    Modifier mon mot de passe
-                </h4>
-                <form action="./index.php" method="post">
-                    <div class="d-flex flex-column text-center pb-3">
-                        <label for="update_pass">modifier votre mot de pass :</label>
-                        <input type="text" name="update_pass" id="update_pass">
-                        <input type="hidden" >
-                    </div>
-
-                    <div class="d-flex w-50 mt-3 flex-column text-center pb-3">
-                        <input type="submit" class="btn btn-primary" value="Valider">
-                        <input type="hidden">
-                    </div>
-                </form>
-
-            </div>
-
-            <div class="col-md-3   d-flex flex-column text-center ">
-                <i class="fas fa-home pb-4" style="font-size: 5rem;"></i>
-
-                <h4>
-                    Modifier mon adresse
-                </h4>
-                <form action="./index.php" method="post">
-                    <div class="d-flex flex-column text-center pb-3">
-                        <label for="update_adress">modifier votre adresse :</label>
-                        <input type="text" name="update_adress" id="update_adress">
-                        <input type="hidden" >
-                    </div>
-                    <div class="d-flex flex-column text-center pb-3">
-                        <label for="update_code_postal">modifier votre code postal :</label>
-                        <input type="text" name="update_code_postal" id="update_code_postal">
-                        <input type="hidden" >
-                    </div>
-                    <div class="d-flex flex-column text-center pb-3">
-                        <label for="update_ville">modifier votre ville :</label>
-                        <input type="text" name="update_ville" id="update_ville">
-                        <input type="hidden" >
-                    </div>
-                    <div class="d-flex w-50 mt-3 flex-column text-center pb-3">
-                        <input type="submit" class="btn btn-primary" value="Valider">
-                        <input type="hidden" >
-                    </div>
-                </form>
-            </div>
             <div class="col-md-3 d-flex flex-column text-center ">
                 <i class="fas fa-archive pb-4  " style="font-size: 5rem;"></i>
                 <form action="./commandes.php" method="post">

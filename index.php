@@ -2,7 +2,7 @@
 include('./function.php');
 require('./header.php');
 if(isset($_POST['validation_de_commande'])){
-    delete_all_products();
+  save_ordre();
   }
 
  if (
@@ -13,7 +13,6 @@ if(isset($_POST['validation_de_commande'])){
 }
 
 if (isset($_POST["log_out_user"])) {
-    var_dump($_SESSION["user_info"][1]['is_connected']); 
     log_out_user(); 
 }
 if(
@@ -25,22 +24,16 @@ isset($_POST['update_nom']) && isset($_POST['update_prenom'])
       "update_prenom"=>$_POST['update_prenom']
   ];
   uptate_information($data);
-  var_dump(intval($_SESSION["user_info"][0]));
 
 }
-if(
-  isset($_POST['update_adress'])&&isset($_POST['update_code_postal'])&& isset($_POST['update_ville'])
-   
-  ){
-    $data = [
-        "id" =>  intval($_SESSION["user_info"][0]), 
-        "update_adress"=> $_POST['update_adress'],
-        "update_code_postal"=> $_POST['update_code_postal'],
-        "update_ville"=> $_POST['update_ville'],
-    ];
-    uptate_adress($data);
-    // var_dump();
+if(isset($_POST['update_adress'])&&isset($_POST['update_code_postal'])&& isset($_POST['update_ville'])){
+    uptate_adress();
+    echo"je suis la "; 
   }
+  if(isset($_POST['old_pass'])){uptate_passe($_POST['old_pass']);}
+  echo"<pre>";
+  var_dump(get_all_orders_by_user());
+  echo"</pre>";
 
 
 ?>
