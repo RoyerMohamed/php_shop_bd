@@ -1,6 +1,7 @@
 <?php
 include('./function.php');
 require('./header.php');
+ var_dump(get_all_orders_by_user());   
 
 ?>
 <!-- les info des la commande list -->

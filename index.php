@@ -32,7 +32,7 @@ if(isset($_POST['update_adress'])&&isset($_POST['update_code_postal'])&& isset($
   }
   if(isset($_POST['old_pass'])){uptate_passe($_POST['old_pass']);}
   echo"<pre>";
-  var_dump(get_all_orders_by_user());
+  var_dump(intval($_SESSION["user_info"][0]));
   echo"</pre>";
 
 

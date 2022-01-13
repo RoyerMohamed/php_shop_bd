@@ -20,12 +20,10 @@ require('./header.php');
 
     </tr>
   </thead>
+
+
   <tbody>
-    <tr>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
+  <?php show_orders_info($_POST['orderId']) ?>
   </tbody>
 </table>
 

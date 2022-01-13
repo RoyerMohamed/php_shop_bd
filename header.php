@@ -1,9 +1,8 @@
 <?php session_start();
-$is_connected = false;
-if (isset($_SESSION["user_info"])) {
-    $is_connected = $_SESSION["user_info"][1]['is_connected'];
+ $is_connected = false; 
+if (isset($_SESSION["is_connected"])) {
+ $is_connected = true ; 
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -40,15 +39,15 @@ if (isset($_SESSION["user_info"])) {
                     <a class="nav-link" href="panier.php">Panier</a>
                 </li>
 
-                <li class="<?php echo  !$is_connected ?  "nav-item" : "d-none" ?>">
+                <li class="<?php echo  $is_connected ? "d-none" :  "nav-item" ?>">
                     <a class="nav-link" href="connection.php"> Connection / Inscription </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="profil.php"><?php echo  !$is_connected ? "" : "mon compte" ?></a>
+                    <a class="nav-link" href="profil.php"><?php echo  $is_connected ?  "mon compte": ""  ?></a>
                 </li>
                 <li class="nav-item">
                     <form action="index.php" method="POST">
-                        <input type="submit" class="nav-link disconect" value="<?php echo  !$is_connected ? "" : "déconnection" ?>">
+                        <input type="submit" class="nav-link disconect" value="<?php echo  $is_connected ?  "déconnection" : "" ?>">
                         <input type="hidden" name="log_out_user" value="" id="log_out_user">
                     </form>
                 </li>

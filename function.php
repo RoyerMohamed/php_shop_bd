@@ -10,21 +10,21 @@ ini_set('display_errors', 1);
 /**/
 function show_single_product($id)
 {
-    $product= get_article_by_id(intval($id));
+    $product = get_article_by_id(intval($id));
 
-        echo"<pre>";
+    echo "<pre>";
     var_dump($product['id']);
-    echo"</pre>";
-        $saveur = $product['saveur'];
-        $img = $product['picture'];
-        $Effets = $product['effets'];
-        $name = $product['name'];
-        $price = $product['prix'];
-        $description = $product['description'];
-        $product_id = $product['id'];
+    echo "</pre>";
+    $saveur = $product['saveur'];
+    $img = $product['picture'];
+    $Effets = $product['effets'];
+    $name = $product['name'];
+    $price = $product['prix'];
+    $description = $product['description'];
+    $product_id = $product['id'];
 
-       
-            echo "<section class=\"container annoce-box\">
+
+    echo "<section class=\"container annoce-box\">
            <h2 class=\"section-title\">$name</h2>
     
            <div class=\"box-descp\">
@@ -91,13 +91,13 @@ function show_multiple_products()
 }
 function add_to_cart($product_id)
 {
-   $product= get_article_by_id(intval($product_id)); 
-    $product['quantity'] =isset($_POST['update_new_quantity']) ? intval($_POST['update_new_quantity']) : 1;   
-   // var_dump($product);
+    $product = get_article_by_id(intval($product_id));
+    $product['quantity'] = isset($_POST['update_new_quantity']) ? intval($_POST['update_new_quantity']) : 1;
+    // var_dump($product);
     foreach ($_SESSION['panier'] as  $value) {
         if ($product['id'] === $value['id']) {
             echo '<script>alert(\'Le produit est deja présant !\')</script>';
-            return; 
+            return;
         }
     }
     array_push($_SESSION['panier'], $product);
@@ -144,7 +144,8 @@ function save_ordre()
     $_SESSION['panier'] = array();
 }
 
-function get_article_by_id($id){
+function get_article_by_id($id)
+{
     $db = getConnection();
     $clients = $db->prepare('SELECT * FROM articles WHERE id=:id');
     $clients->execute(array(
@@ -152,11 +153,12 @@ function get_article_by_id($id){
     ));
     return $clients->fetch();
 }
-function show_validation_card(){
+function show_validation_card()
+{
 
     foreach ($_SESSION['panier'] as $key => $value) {
 
-     
+
         $quantity = $_SESSION['panier'][$key]['quantity'];
         $img = $_SESSION['panier'][$key]['picture'];
         $name = $_SESSION['panier'][$key]['name'];
@@ -180,10 +182,9 @@ function show_validation_card(){
         # code...
     }
 
-    for ($i = 0 ; count($_SESSION['panier']) > $i ; $i++){
-         
+    for ($i = 0; count($_SESSION['panier']) > $i; $i++) {
     }
-    }
+}
 
 
 function shipping_date()
@@ -191,9 +192,9 @@ function shipping_date()
     setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
     $order_date = date('D M Y');
     $order_delivery_date = date('D M Y', strtotime('+3 days'));
-   $product_price= product_price(); 
-   $frais = frais();
-   $calculate_total_price = calculate_total_price();     
+    $product_price = product_price();
+    $frais = frais();
+    $calculate_total_price = calculate_total_price();
     return "
     Le total de votre commande est de $product_price € , qui compte $frais € de frais de ports <br>
     Pour un total de $calculate_total_price €. <br>
@@ -462,22 +463,23 @@ function user_connection()
     if ($result) {
         if (password_verify($_POST["mot_de_passe_conection"], $result["mot_de_passe"])) {
             $_SESSION["user_info"]  = array_splice($result, array_search("mot_de_passe", array_keys($result)), 1);
-            array_push($_SESSION["user_info"], ["is_connected" => true]);
+            $_SESSION["is_connected"] = true;
             echo '<script>alert(\'Vous êtes connecté !\')</script>';
         } else {
             echo '<script>alert(\'Mot de passe n\'est pas bon !\')</script>';
+            return ;
         }
     } else {
         echo '<script>alert(\'Email n\'est pas bon !\')</script>';
+        return ;
     };
     return false;
 }
 //innerjoin 
 function get_all_orders_by_user()
 {
-    ////////////////
     $db = getConnection();
-    $result = $db->prepare('SELECT * FROM clients WHERE id = :id INNER JOIN commandes ON commandes.id_client = clients.id');
+    $result = $db->prepare('SELECT * FROM commandes WHERE id_client = :id');
     $result->execute(array("id" => intval($_SESSION["user_info"][0])));
     return  $result->fetchAll();
 }
@@ -532,14 +534,6 @@ function show_profil()
 }
 
 
-function get_all_orders()
-{
-    $id = intval($_SESSION["user_info"][0]);
-    $db = getConnection();
-    $result = $db->prepare('SELECT * FROM clients WHERE id = ? INNER JOIN commandes ON commandes.id_client = clients.id');
-    $result->execute(array("id" => $id));
-    $result->fetch();
-}
 
 function show_single_orders($id)
 {
@@ -552,16 +546,7 @@ function show_single_orders($id)
     }
     // 
 }
-function get_order_by_id($id)
-{
 
-    $db = getConnection();
-    $result = $db->prepare('SELECT * FROM commandes WHERE id = :id');
-    $result->execute(array("id" => $id));
-    $result->fetch();
-
-    return $result;
-}
 function get_user_by_id($id)
 {
     $db = getConnection();
@@ -601,12 +586,11 @@ function uptate_information($data)
 function uptate_passe()
 {
     $db = getConnection();
-    //$user = get_user_by_id(intval($_SESSION["user_info"][0]));
-
-    $query = $db->query('SELECT mot_de_passe FROM clients WHERE id = :id');
-    $query->execute(array("id" => $_SESSION["user_info"][0]));
-    $old_pass_data_base = $query->fetchAll();
-    if (password_verify(strip_tags($_POST['old_pass']), $old_pass_data_base[0]["mot_de_passe"])) {
+    $id  = intval($_SESSION["user_info"][0]);
+    $query = $db->prepare('SELECT mot_de_passe FROM clients WHERE id = :id');
+    $query->execute(array("id" => $id));
+    $old_pass_data_base = $query->fetch();
+    if (password_verify(strip_tags($_POST['old_pass']), $old_pass_data_base["mot_de_passe"])) {
 
         if (check_passe($_POST['new_pass'])) {
             $result = $db->prepare('UPDATE clients SET mot_de_passe = :mot_de_passe  WHERE id = :id');
@@ -759,9 +743,9 @@ function show_validation()
     $show_validation_card = show_validation_card();
     $show_uptate_information =  show_uptate_information("validation.php", "choix des coordonnées");
     $show_uptate_adress = show_uptate_adress("validation.php", "Choix de l'edresse de livration");
-    $shipping_date=shipping_date();
-    $product_price = product_price(); 
-    $frais = frais(); 
+    $shipping_date = shipping_date();
+    $product_price = product_price();
+    $frais = frais();
     $calculate_total_price = calculate_total_price();
 
     return "
@@ -815,13 +799,54 @@ function show_validation()
     ";
 }
 
+function get_order_info($id)
+{
 
-function show_commandes(){
-    foreach (get_all_orders_by_user() as $key => $value) {
-        var_dump($value);
-        $num_commande = $value['numero'];
-        $date_commande = $value['date_commande'] ; 
-        $prix = $value['prix']; 
+    $db = getConnection();
+    $query = $db->prepare('SELECT * FROM commandes_articles INNER JOIN  articles ON articles.id = commandes_articles.id_articles  WHERE id_commande = :id');
+    $query->execute(array("id" => intval($id)));
+    return $query->fetchAll();
+}
+
+function show_orders_info()
+{
+
+    $infos =  get_order_info($_POST['orderId']);
+    foreach ($infos as $article) {
+        echo "<pre>";
+        var_dump($article);
+        echo "</pre>";
+        $article_name = $article['name'];
+        $article_prix = $article['prix'];
+        //a voir !! 
+        $article_quantite = $article[2];
+        $montent_total = $article_prix *  $article_quantite + ($article_quantite * 3);
+        echo
+        "
+         <tr>
+        <td>$article_name</td>
+        <td>$article_prix €</td>
+        <td>$article_quantite</td>
+        <td>$montent_total €</td>
+        </tr>
+         ";
+         
+    }
+    echo "<tr>
+    <td>Frais de port</td>
+    <td>" .  number_format(3, 2, ',', 0)  . " €</td>
+    <td> $article_quantite </td>
+    <td>" .  number_format(3 * $article_quantite, 2, ',', 0)  . " €</td>
+    </tr>
+    </tbody>
+    </table>";
+}
+function show_commandes()
+{
+    foreach (get_all_orders_by_user() as $order) {
+        $num_commande = $order['numero'];
+        $date_commande = $order['date_commande'];
+        $prix = $order['prix'];
         echo "  
           <tr>
             <th scope=\"row\">2</th>
@@ -830,19 +855,16 @@ function show_commandes(){
             <td>$prix €</td>
             <td>
             <form action=\"details_commande.php\" method=\"post\">
-                        <input type=\"hidden\" name=\"orderId\" value=\"" . htmlspecialchars($value["id"]) ."\">
+                        <input type=\"hidden\" name=\"orderId\" value=\"" . htmlspecialchars($order["id"]) . "\">
                         <input type=\"hidden\" name=\"orderNumber\" value=\"" . htmlspecialchars($num_commande) . "\">
-                        <input type=\"hidden\" name=\"orderTotal\" value=\"" . htmlspecialchars( $prix ) . "\">
+                        <input type=\"hidden\" name=\"orderTotal\" value=\"" . htmlspecialchars($prix) . "\">
                         <input type=\"hidden\" name=\"orderDate\" value=\"" . htmlspecialchars($date_commande) . "\">
                         <button type=\"submit\" class=\"btn w-50 btn-secondary\">
                         <i class=\"fas fa-arrow-right\"></i>
                         </button>                   
-                         </form>
-           
+             </form>
             </td>
           </tr>
-          " ; 
-        }
-
+          ";
+    }
 }
-
